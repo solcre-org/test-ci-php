@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace solcre\BamboopaymentSdk;
 
 class SkeletonClass
 {
     /**
-     * Create a new Skeleton Instance
+     * Create a new Skeleton Instance.
      */
     public function __construct()
     {
@@ -15,7 +15,7 @@ class SkeletonClass
     }
 
     /**
-     * Friendly welcome
+     * Friendly welcome.
      *
      * @param string $phrase Phrase to return
      *
