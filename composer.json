@@ -37,13 +37,13 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "BambooPayment\\": "tests"
+      "BambooPaymentTests\\": "tests"
     }
   },
   "scripts": {
     "phpcs": "php-cs-fixer fix -vvv --diff --dry-run --allow-risky=yes --ansi",
     "phpcs:fix": "php-cs-fixer fix -vvv --allow-risky=yes --ansi",
-    "phpstan": "phpstan analyse -l max -c phpstan.neon src --ansi --memory-limit=192M",
+    "phpstan": "phpstan analyse -l 5 -c phpstan.neon src --ansi --memory-limit=192M",
     "phpunit": "phpunit --coverage-text",
     "test": [
       "@phpunit",

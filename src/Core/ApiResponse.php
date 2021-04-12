@@ -2,11 +2,9 @@
 
 namespace BambooPayment\Core;
 
-use BambooPayment\Util\CaseInsensitiveArray;
-use JsonException;
-use Psr\Http\Message\ResponseInterface;
-use function json_decode;
 use const JSON_THROW_ON_ERROR;
+use JsonException;
+use function json_decode;
 
 /**
  * Class ApiResponse.
@@ -14,9 +12,9 @@ use const JSON_THROW_ON_ERROR;
 class ApiResponse
 {
     /**
-     * @var null|array|CaseInsensitiveArray
+     * @var null|array
      */
-    public $headers;
+    public ?array $headers;
 
     /**
      * @var null|array
@@ -29,15 +27,17 @@ class ApiResponse
     public int $code;
 
     /**
-     * @param ResponseInterface $response
+     * @param string|null $body
+     * @param int $statusCode
+     * @param array|null $headers
      */
-    public function __construct(ResponseInterface $response)
+    public function __construct(?string $body, int $statusCode, ?array $headers = null)
     {
-        $this->code = $response->getStatusCode();
-        $this->headers = $response->getHeaders();
+        $this->code = $statusCode;
+        $this->headers = $headers ?? [];
 
         try {
-            $json = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+            $json = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
             $json = null;
             unset($exception);

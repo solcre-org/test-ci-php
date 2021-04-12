@@ -2,7 +2,6 @@
 
 namespace BambooPayment\Core;
 
-
 use function array_key_exists;
 
 /**
@@ -27,7 +26,10 @@ abstract class AbstractServiceFactory
      * @var array<string, AbstractService|AbstractServiceFactory>
      */
     private array $services;
-
+    /**
+     * @var AbstractService|AbstractServiceFactory|null
+     */
+    private $data;
 
     /**
      * @param BambooPaymentClient $client
@@ -36,9 +38,7 @@ abstract class AbstractServiceFactory
     {
         $this->client = $client;
         $this->services = [];
-
     }//end __construct()
-
 
     /**
      * @param string $name
@@ -47,16 +47,16 @@ abstract class AbstractServiceFactory
      */
     abstract protected function getServiceClass(string $name): ?string;
 
-
     /**
      * @param string $name
+     *
      * @return null|AbstractService|AbstractServiceFactory
      */
     public function __get(string $name)
     {
         $serviceClass = $this->getServiceClass($name);
         if ($serviceClass !== null) {
-            if (! array_key_exists($name, $this->services)) {
+            if ( ! array_key_exists($name, $this->services)) {
                 $this->services[$name] = new $serviceClass($this->client);
             }
 
@@ -64,22 +64,15 @@ abstract class AbstractServiceFactory
         }
 
         return null;
-
     }//end __get()
 
-
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         $this->data[$name] = $value;
-
     }//end __set()
 
-
-    public function __isset($name): bool
+    public function __isset(string $name): bool
     {
         return isset($this->data[$name]);
-
     }//end __isset()
-
-
 }//end class

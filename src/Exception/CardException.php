@@ -22,6 +22,7 @@ class CardException extends ApiErrorException
      * @param null|array $jsonBody the JSON deserialized body
      * @param null|array|CaseInsensitiveArray $httpHeaders the HTTP headers array
      * @param null|string $stripeCode the BambooPayment error code
+     *
      * @return CardException
      */
     public static function factory(

@@ -4,9 +4,7 @@ namespace BambooPayment\Core;
 
 use BambooPayment\Collection;
 use BambooPayment\Entity\BambooPaymentObject;
-use BambooPayment\Exception\InvalidArgumentException;
 use GeneratedHydrator\Configuration;
-use function trim;
 
 /**
  * Abstract base class for all services.
@@ -23,37 +21,19 @@ abstract class AbstractService
         $this->client = $client;
     }
 
-    /**
-     * Gets the client used by this service to send requests.
-     *
-     * @return BambooPaymentClient
-     */
-    public function getClient(): BambooPaymentClient
+    protected function request(string $method, string $path, string $class, ?array $params = null, ?array $opts = null): BambooPaymentObject
     {
-        return $this->client;
-    }
+        $response = $this->client->request($this->client->createApiRequest($method, $path, $params, $opts));
 
-    protected function request($method, $path, $class, $params = null, $opts = null): BambooPaymentObject
-    {
-        $response = $this->getClient()->request($method, $path, $params, $opts);
         return $this->convertToBambooPaymentObject($class, $response);
     }
 
-    protected function requestCollection($method, $path, $params, $opts): Collection
-    {
-        return $this->getClient()->requestCollection($method, $path, $params, $opts);
-    }
+//    protected function requestCollection($method, $path, $params, $opts): Collection
+//    {
+//        return $this->getClient()->requestCollection($method, $path, $params, $opts);
+//    }
 
-    protected function validateId(int $id): void
-    {
-        if ($id === null || trim($id) === '') {
-            $msg = 'The resource ID cannot be null or whitespace.';
-
-            throw new InvalidArgumentException($msg);
-        }
-    }
-
-    protected function convertToBambooPaymentObject($class, $response): BambooPaymentObject
+    protected function convertToBambooPaymentObject(string $class, array $response): BambooPaymentObject
     {
         $config = new Configuration($class);
         $hydratorClass = $config->createFactory()->getHydratorClass();

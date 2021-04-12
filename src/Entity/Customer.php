@@ -4,23 +4,23 @@ namespace BambooPayment\Entity;
 
 class Customer extends BambooPaymentObject
 {
-    public const OBJECT_NAME = 'customer';
-
     /** @var int */
-    private int $CustomerId;
+    private ?int $CustomerId;
 
     /** @var  string */
-    private string $Created;
+    private ?string $Created;
 
     /** @var string |null */
     private ?string $CommerceCustomerId;
 
     /** @var string|null */
     private ?string $Owner;
+
+    /** @var string|null */
     private $Commerce;
 
     /** @var string */
-    private string $Email;
+    private ?string $Email;
 
     /** @var bool|null */
     private ?bool $Enabled;
@@ -31,23 +31,22 @@ class Customer extends BambooPaymentObject
     /** @var array|null */
     private ?array $BillingAddress;
 
-
     /** @var array|null */
     private ?array $AdditionalData;
 
-
     /** @var array|null */
     private ?array $PaymentProfiles;
-
 
     /** @var string|null */
     private ?string $CaptureURL;
 
     /** @var string */
-    private string $UniqueID;
+    private ?string $UniqueID;
 
     /** @var string */
-    private string $URL;
+    private ?string $URL;
+
+    /** @var string|null */
     private $https;
 
     /** @var string|null */
@@ -74,7 +73,7 @@ class Customer extends BambooPaymentObject
     /**
      * @return int
      */
-    public function getCustomerId(): int
+    public function getCustomerId(): ?int
     {
         return $this->CustomerId;
     }
@@ -82,7 +81,7 @@ class Customer extends BambooPaymentObject
     /**
      * @return string
      */
-    public function getCreated(): string
+    public function getCreated(): ?string
     {
         return $this->Created;
     }
@@ -104,9 +103,9 @@ class Customer extends BambooPaymentObject
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCommerce()
+    public function getCommerce(): ?string
     {
         return $this->Commerce;
     }
@@ -114,7 +113,7 @@ class Customer extends BambooPaymentObject
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->Email;
     }
@@ -170,7 +169,7 @@ class Customer extends BambooPaymentObject
     /**
      * @return string
      */
-    public function getUniqueID(): string
+    public function getUniqueID(): ?string
     {
         return $this->UniqueID;
     }
@@ -178,15 +177,15 @@ class Customer extends BambooPaymentObject
     /**
      * @return string
      */
-    public function getURL(): string
+    public function getURL(): ?string
     {
         return $this->URL;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getHttps()
+    public function getHttps(): ?string
     {
         return $this->https;
     }

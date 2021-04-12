@@ -2,64 +2,64 @@
 
 namespace BambooPayment\Core;
 
-use BambooPayment\Exception\ApiErrorException;
-use BambooPayment\Exception\AuthenticationException;
 use BambooPayment\HttpClient\HttpClient;
 use Psr\Http\Message\ResponseInterface;
 use function array_merge;
 
-/**
- * Class ApiRequestor.
- */
-class ApiRequestor
+class ApiRequest
 {
     /**
-     * @var null|string
+     * @var string
      */
-    private ?string $apiKey;
+    private string $method;
 
     /**
      * @var string
      */
-    private ?string $apiBase;
+    private string $absUrl;
+
+    /**
+     * @var array
+     */
+    private array $params;
+    /**
+     * @var array
+     */
+    private array $headers;
+
+    /**
+     * @var string
+     */
+    private string $apiKey;
 
     /**
      * @var HttpClient
      */
-    private static $_httpClient;
+    private static ?HttpClient $_httpClient = null;
 
     /**
-     * ApiRequestor constructor.
+     * ApiRequest constructor.
      *
-     * @param null|string $apiKey
-     * @param null|string $apiBase
+     * @param string $method
+     * @param string $path
+     * @param array $params
+     * @param string $apiKey
+     * @param string $apiBase
      */
-    public function __construct($apiKey = null, $apiBase = null)
+    public function __construct(string $method, string $path, array $params, string $apiKey, string $apiBase, array $headers)
     {
+        $this->method = $method;
+        $this->params = $params;
+        $this->headers = $headers;
         $this->apiKey = $apiKey;
-        $this->apiBase = $apiBase;
+        $this->absUrl = $apiBase . $path;
     }
 
-
-    /**
-     * @param string $method
-     * @param string $url
-     * @param null|array $params
-     * @param null|array $headers
-     *
-     * @return array tuple containing (ApiReponse, API key)
-     * @throws ApiErrorException
-     * @throws AuthenticationException
-     */
-    public function request(string $method, string $url, $params = null, $headers = null): array
+    public function request(): ApiResponse
     {
-        $params = $params ?: [];
-        $headers = $headers ?: [];
-        $response = $this->makeRequest($method, $url, $params, $headers);
-        $apiResponse = new ApiResponse($response);
-        //TODO MANEJAR ERRORES
-        $json = $this->interpretResponse($apiResponse);
-        return $json;
+        $response = $this->makeRequest($this->method, $this->absUrl, $this->params, $this->headers);
+
+        return new ApiResponse($response->getBody(), $response->getStatusCode(), $response->getHeaders());
     }
 
 //    public function handleErrorResponse($rbody, $rcode, $rheaders, $resp)
@@ -127,6 +127,7 @@ class ApiRequestor
      * @static
      *
      * @param string $apiKey
+     *
      * @return array
      */
     private function defaultHeaders(string $apiKey): array
@@ -139,29 +140,15 @@ class ApiRequestor
 
     /**
      * @param string $method
-     * @param string $url
+     * @param string $absUrl
      * @param array $params
      * @param array $headers
      *
      * @return ResponseInterface
-     * @throws AuthenticationException
      */
-    private function makeRequest(string $method, string $url, array $params, array $headers): ResponseInterface
+    private function makeRequest(string $method, string $absUrl, array $params, array $headers): ResponseInterface
     {
-        $myApiKey = $this->apiKey;
-
-        if (! $myApiKey) {
-            $msg = 'No API key provided.  (HINT: set your API key using '
-                . '"BambooPayment::setApiKey(<API-KEY>)".  You can generate API keys from '
-                . 'the BambooPayment web interface.  See https://stripe.com/api for '
-                . 'details, or email support@stripe.com if you have any questions.';
-
-            throw new AuthenticationException($msg);
-        }
-
-        $absUrl = $this->apiBase . $url;
-        $defaultHeaders = $this->defaultHeaders($myApiKey);
-
+        $defaultHeaders = $this->defaultHeaders($this->apiKey);
         $combinedHeaders = array_merge($defaultHeaders, $headers);
 
         return $this->httpClient()->request(
@@ -174,9 +161,10 @@ class ApiRequestor
 
     /**
      * @param ApiResponse $apiResponse
+     *
      * @return array
      */
-    private function interpretResponse(ApiResponse $apiResponse): array
+    public function interpretResponse(ApiResponse $apiResponse): array
     {
         $rbody = $apiResponse->json;
         $rcode = $apiResponse->code;
@@ -211,7 +199,7 @@ class ApiRequestor
      */
     private function httpClient(): HttpClient
     {
-        if (! self::$_httpClient) {
+        if (! self::$_httpClient instanceof HttpClient) {
             self::$_httpClient = HttpClient::instance();
         }
 

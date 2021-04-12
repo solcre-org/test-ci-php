@@ -8,17 +8,17 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use function strtolower;
 
-class HttpClient
+final class HttpClient
 {
-    protected static $instance;
+    protected static ?HttpClient $instance = null;
 
-    public static function instance(): HttpClient
+    public static function instance(): ?HttpClient
     {
-        if (! static::$instance) {
-            static::$instance = new static();
+        if ( ! self::$instance instanceof self) {
+            self::$instance = new self();
         }
 
-        return static::$instance;
+        return self::$instance;
     }
 
     protected $defaultOptions;
@@ -30,13 +30,12 @@ class HttpClient
         $this->defaultOptions = $defaultOptions;
     }
 
-
     public function getDefaultOptions()
     {
         return $this->defaultOptions;
     }
 
-    public function request($method, $absUrl, $headers, $params): ResponseInterface
+    public function request(string $method, string $absUrl, array $headers, array $params): ResponseInterface
     {
         $method = strtolower($method);
         if ($method !== 'get' && $method !== 'post') {
@@ -44,8 +43,8 @@ class HttpClient
         }
 
         return $this->client->$method($absUrl, [
-            'headers'     => $headers,
-            'json'        => $params,
+            'headers' => $headers,
+            'json' => $params,
             'http_errors' => false
         ]);
     }

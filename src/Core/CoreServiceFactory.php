@@ -12,17 +12,11 @@ class CoreServiceFactory extends AbstractServiceFactory
      */
     private static array $classMap
         = [
-
             'customers' => CustomerService::class,
-
         ];
-
 
     public function getServiceClass(string $name): ?string
     {
         return self::$classMap[$name] ?? null;
-
     }
-
-
 }
