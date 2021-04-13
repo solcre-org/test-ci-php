@@ -2,9 +2,7 @@
 
 namespace BambooPayment\Core;
 
-use BambooPayment\Collection;
 use BambooPayment\Entity\BambooPaymentObject;
-use GeneratedHydrator\Configuration;
 
 abstract class AbstractService
 {
@@ -27,20 +25,32 @@ abstract class AbstractService
         return $this->convertToBambooPaymentObject($class, $response);
     }
 
-    // protected function requestCollection($method, $path, $params, $opts): Collection
-    // {
-    // return $this->getClient()->requestCollection($method, $path, $params, $opts);
-    // }
+    protected function requestCollection(
+        string $method,
+        string $path,
+        string $class,
+        ?array $params = null,
+        ?array $opts = null
+    ): array {
+        $response = $this->client->request($this->client->createApiRequest($method, $path, $params, $opts));
 
-    protected function convertToBambooPaymentObject(string $class, array $response): BambooPaymentObject
+        $result = [];
+        foreach ($response as $item) {
+            if (\is_array($item)) {
+                $result[] = $this->convertToBambooPaymentObject($class, $item);
+            }
+        }
+
+        return $result;
+    }
+
+    protected function convertToBambooPaymentObject(string $class, array $response): ?BambooPaymentObject
     {
-        $config        = new Configuration($class);
-        $hydratorClass = $config->createFactory()->getHydratorClass();
-        $hydrator      = new $hydratorClass();
-        $object        = new $class();
+        $object = new $class();
+        if ($object instanceof BambooPaymentObject) {
+            return $object->hydrate($class, $response);
+        }
 
-        $hydrator->hydrate($response, $object);
-
-        return $object;
+        return null;
     }
 }

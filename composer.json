@@ -17,7 +17,7 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^7.4",
     "ext-json": "*",
     "guzzlehttp/guzzle": "^7.3",
     "ocramius/generated-hydrator": "^4.1"
@@ -42,7 +42,7 @@
   "scripts": {
     "phpcs": "php-cs-fixer fix -vvv --diff --dry-run --allow-risky=yes --ansi",
     "phpcs:fix": "php-cs-fixer fix -vvv --allow-risky=yes --ansi",
-    "phpstan": "phpstan analyse -l 5 -c phpstan.neon src --ansi --memory-limit=192M",
+    "phpstan": "phpstan analyse -l 5 -c phpstan.neon src tests --ansi --memory-limit=192M",
     "phpunit": "phpunit --coverage-text",
     "test": [
       "@phpunit",

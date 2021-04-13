@@ -39,17 +39,29 @@ final class HttpClient
     public function request(string $method, string $absUrl, array $headers, array $params): ResponseInterface
     {
         $method = strtolower($method);
-        if (($method !== 'get' && $method !== 'post') || is_callable([$this->client, $method])) {
+        if (($method !== 'get' && $method !== 'post') || ! is_callable([$this->client, $method])) {
             throw new UnexpectedValueException("Unrecognized method $method");
+        }
+
+        $requestParams = [
+            'query' => $params
+        ];
+
+        if ($method === 'post') {
+            $requestParams = [
+                'json' => $params
+            ];
         }
 
         return $this->client->$method(
             $absUrl,
-            [
-            'headers'     => $headers,
-            'json'        => $params,
-            'http_errors' => false
-        ]
+            \array_merge(
+                [
+                    'headers'     => $headers,
+                    'http_errors' => false
+                ],
+                $requestParams
+            )
         );
     }
 }

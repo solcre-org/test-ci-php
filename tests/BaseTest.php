@@ -25,11 +25,11 @@ abstract class BaseTest extends TestCase
      */
     private function getMockData($filename, $endpoint): ?string
     {
-        $data = null;
+        $data     = null;
         $filename = __DIR__ . '/Data/' . $filename . '.json';
         if (\file_exists($filename)) {
             $mockFile = \json_decode(\file_get_contents($filename), true, 512, JSON_THROW_ON_ERROR);
-            $data = $mockFile[$endpoint]['data'];
+            $data     = $mockFile[$endpoint]['data'];
         }
 
         return $data;
