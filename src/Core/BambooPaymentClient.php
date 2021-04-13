@@ -13,10 +13,10 @@ use function preg_match;
  */
 class BambooPaymentClient
 {
-    private const DEFAULT_API_BASE = 'https://api.siemprepago.com/';
+    private const DEFAULT_API_BASE         = 'https://api.siemprepago.com/';
     private const DEFAULT_API_TESTING_BASE = 'https://testapi.siemprepago.com/';
-    public const ARRAY_ERROR_KEY = 'Errors';
-    public const ARRAY_RESULT_KEY = 'Response';
+    public const ARRAY_ERROR_KEY           = 'Errors';
+    public const ARRAY_RESULT_KEY          = 'Response';
 
     private ?CoreServiceFactory $coreServiceFactory = null;
     private array $config;
@@ -29,7 +29,7 @@ class BambooPaymentClient
 
     public function __construct(array $config)
     {
-        if ( ! isset($config['api_key'])) {
+        if (! isset($config['api_key'])) {
             throw new InvalidArgumentException('Must provide a api key');
         }
 
@@ -41,7 +41,7 @@ class BambooPaymentClient
         }
 
         $this->validateConfig($config);
-        $this->config = $config;
+        $this->config      = $config;
         $this->defaultOpts = [];
     }
 
@@ -123,7 +123,7 @@ class BambooPaymentClient
 
     public function __get($name)
     {
-        if ( ! $this->coreServiceFactory instanceof CoreServiceFactory) {
+        if (! $this->coreServiceFactory instanceof CoreServiceFactory) {
             $this->coreServiceFactory = new CoreServiceFactory($this);
         }
 

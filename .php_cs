@@ -7,13 +7,18 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@PSR2'                                      => true,
         'array_syntax'                               => ['syntax' => 'short'],
-        'binary_operator_spaces'                     => true,
+        'binary_operator_spaces'                     => [
+                                                                        'operators' => [
+                                                                            '='  => 'align',
+                                                                            '=>' => 'align',
+                                                                        ],
+                                                                    ],
         'single_line_after_imports'                  => true,
         'blank_line_before_return'                   => true,
         'cast_spaces'                                => true,
         'concat_space'                               => ['spacing' => 'one'],
         'no_singleline_whitespace_before_semicolons' => true,
-        'not_operator_with_space'                    => true,
+        'not_operator_with_space'                    => false,
         'no_unused_imports'                          => true,
         'phpdoc_align'                               => false,
         'phpdoc_indent'                              => true,

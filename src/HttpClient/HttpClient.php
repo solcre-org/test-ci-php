@@ -2,11 +2,11 @@
 
 namespace BambooPayment\HttpClient;
 
-use BambooPayment\Exception\BadMethodCallException;
 use BambooPayment\Exception\UnexpectedValueException;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
+use function is_callable;
 use function strtolower;
 
 final class HttpClient
@@ -15,7 +15,7 @@ final class HttpClient
 
     public static function instance(): ?HttpClient
     {
-        if ( ! self::$instance instanceof self) {
+        if (! self::$instance instanceof self) {
             self::$instance = new self();
         }
 
@@ -27,7 +27,7 @@ final class HttpClient
 
     public function __construct($defaultOptions = null)
     {
-        $this->client = new GuzzleClient();
+        $this->client         = new GuzzleClient();
         $this->defaultOptions = $defaultOptions;
     }
 
@@ -39,18 +39,17 @@ final class HttpClient
     public function request(string $method, string $absUrl, array $headers, array $params): ResponseInterface
     {
         $method = strtolower($method);
-        if ($method !== 'get' && $method !== 'post') {
-            throw new UnexpectedValueException("Unrecognized method {$method}");
+        if (($method !== 'get' && $method !== 'post') || is_callable([$this->client, $method])) {
+            throw new UnexpectedValueException("Unrecognized method $method");
         }
 
-        if (\is_callable([$this->client, $method])) {
-            return $this->client->$method($absUrl, [
-                'headers' => $headers,
-                'json' => $params,
-                'http_errors' => false
-            ]);
-        }
-
-        throw new BadMethodCallException("Method: {$method} does not exists");
+        return $this->client->$method(
+            $absUrl,
+            [
+            'headers'     => $headers,
+            'json'        => $params,
+            'http_errors' => false
+        ]
+        );
     }
 }

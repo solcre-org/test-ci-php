@@ -1,73 +1,52 @@
-<?php
+<?php /** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+
+/** @noinspection ALL */
 
 namespace BambooPayment\Entity;
 
 class Customer extends BambooPaymentObject
 {
-    /** @var int */
     private ?int $CustomerId;
-
-    /** @var  string */
     private ?string $Created;
-
-    /** @var string |null */
     private ?string $CommerceCustomerId;
-
-    /** @var string|null */
     private ?string $Owner;
-
-    /** @var string|null */
-    private $Commerce;
-
-    /** @var string */
+    private ?string $Commerce;
     private ?string $Email;
-
-    /** @var bool|null */
     private ?bool $Enabled;
-
-    /** @var string|null */
     private ?string $ShippingAddress;
-
-    /** @var array|null */
     private ?array $BillingAddress;
-
-    /** @var array|null */
     private ?array $AdditionalData;
-
-    /** @var array|null */
     private ?array $PaymentProfiles;
-
-    /** @var string|null */
     private ?string $CaptureURL;
-
-    /** @var string */
     private ?string $UniqueID;
-
-    /** @var string */
     private ?string $URL;
-
-    /** @var string|null */
-    private $https;
-
-    /** @var string|null */
+    private ?string $https;
     private ?string $FirstName;
-
-    /** @var string|null */
     private ?string $PrimerNombre;
-
-    /** @var string|null */
     private ?string $LastName;
-
-    /** @var string|null */
     private ?string $PrimerApellido;
-
-    /** @var string|null */
     private ?string $DocNumber;
-
-    /** @var string|null */
     private ?string $DocumentTypeId;
-
-    /** @var string|null */
     private ?string $PhoneNumber;
 
     /**

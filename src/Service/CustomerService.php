@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace BambooPayment\Service;
 
@@ -8,7 +8,7 @@ use function sprintf;
 
 class CustomerService extends AbstractService
 {
-    private const BASE_URI = 'v1/api/customer';
+    private const BASE_URI   = 'v1/api/customer';
     private const UPDATE_URI = 'v1/api/customer/%s/update';
 
     public function create(?array $params = null, ?array $opts = null): Customer

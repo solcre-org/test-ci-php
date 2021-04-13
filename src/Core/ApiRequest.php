@@ -55,11 +55,11 @@ class ApiRequest
      */
     public function __construct(string $method, string $path, array $params, string $apiKey, string $apiBase, array $headers)
     {
-        $this->method = $method;
-        $this->params = $params;
+        $this->method  = $method;
+        $this->params  = $params;
         $this->headers = $headers;
-        $this->apiKey = $apiKey;
-        $this->absUrl = $apiBase . $path;
+        $this->apiKey  = $apiKey;
+        $this->absUrl  = $apiBase . $path;
     }
 
     public function request(): ApiResponse
@@ -80,7 +80,7 @@ class ApiRequest
     {
         return [
             'Authorization' => 'Basic ' . $apiKey,
-            'Content-Type' => 'application/json'
+            'Content-Type'  => 'application/json'
         ];
     }
 
@@ -94,7 +94,7 @@ class ApiRequest
      */
     private function makeRequest(string $method, string $absUrl, array $params, array $headers): ResponseInterface
     {
-        $defaultHeaders = $this->defaultHeaders($this->apiKey);
+        $defaultHeaders  = $this->defaultHeaders($this->apiKey);
         $combinedHeaders = array_merge($defaultHeaders, $headers);
 
         return $this->httpClient()->request(
@@ -109,6 +109,12 @@ class ApiRequest
      * @param ApiResponse $apiResponse
      *
      * @return array
+     *
+     * @throws ApiErrorException
+     * @throws AuthenticationException
+     * @throws InvalidRequestException
+     * @throws PermissionException
+     * @throws UnknownApiErrorException
      */
     public function interpretResponse(ApiResponse $apiResponse): array
     {
@@ -161,7 +167,7 @@ class ApiRequest
      */
     private function httpClient(): HttpClient
     {
-        if ( ! self::$_httpClient instanceof HttpClient) {
+        if (! self::$_httpClient instanceof HttpClient) {
             self::$_httpClient = HttpClient::instance();
         }
 

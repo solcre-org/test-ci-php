@@ -32,11 +32,11 @@ abstract class ApiErrorException extends Exception implements ExceptionInterface
         ?string $requestId = null
     ) {
         parent::__construct($errorMessage);
-        $this->errorMessage = $errorMessage;
-        $this->httpStatus = $httpStatus;
-        $this->jsonBody = $jsonBody;
-        $this->requestId = $requestId;
-        $this->bambooPaymentCode = $bambooPaymentCode;
+        $this->errorMessage        = $errorMessage;
+        $this->httpStatus          = $httpStatus;
+        $this->jsonBody            = $jsonBody;
+        $this->requestId           = $requestId;
+        $this->bambooPaymentCode   = $bambooPaymentCode;
         $this->bambooPaymentDetail = $bambooPaymentDetail;
     }
 
@@ -96,8 +96,8 @@ abstract class ApiErrorException extends Exception implements ExceptionInterface
     public function __toString(): string
     {
         $statusStr = ($this->getHttpStatus() === null) ? '' : "(Status {$this->getHttpStatus()}) ";
-        $idStr = ($this->getRequestId() === null) ? '' : "(Request {$this->getRequestId()}) ";
+        $idStr     = ($this->getRequestId() === null) ? '' : "(Request {$this->getRequestId()}) ";
 
-        return "{$statusStr}{$idStr}{$this->getMessage()}";
+        return "$statusStr$idStr{$this->getMessage()}";
     }
 }

@@ -9,6 +9,7 @@ use BambooPayment\Exception\InvalidRequestException;
 use BambooPayment\Exception\PermissionException;
 use BambooPayment\Exception\UnexpectedValueException;
 use BambooPayment\Exception\UnknownApiErrorException;
+use function is_array;
 
 class ErrorHandler
 {
@@ -23,7 +24,7 @@ class ErrorHandler
     public function handleErrorResponse(?array $body, int $code): void
     {
         $errorData = $body[BambooPaymentClient::ARRAY_ERROR_KEY] ?? null;
-        if (! \is_array($body) || $errorData === null) {
+        if (! is_array($body) || $errorData === null) {
             throw new UnexpectedValueException('Invalid response object from API');
         }
 
@@ -46,8 +47,8 @@ class ErrorHandler
     private function throwSpecificException(array $errorData, int $code, array $body): void
     {
         $bambooPaymentErrorCode = $errorData['ErrorCode'] ?? null;
-        $bambooPaymentMessage = $errorData['Message'] ?? null;
-        $bambooPaymentDetail = $errorData['Detail'] ?? null;
+        $bambooPaymentMessage   = $errorData['Message'] ?? null;
+        $bambooPaymentDetail    = $errorData['Detail'] ?? null;
 
         switch ($code) {
             case 400:

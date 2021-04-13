@@ -33,7 +33,7 @@ class ApiResponse
      */
     public function __construct(?string $body, int $statusCode, ?array $headers = null)
     {
-        $this->code = $statusCode;
+        $this->code    = $statusCode;
         $this->headers = $headers ?? [];
 
         try {

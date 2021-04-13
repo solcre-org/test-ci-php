@@ -4,16 +4,6 @@ namespace BambooPayment\Core;
 
 use function array_key_exists;
 
-/**
- * Abstract base class for all service factories used to expose service
- * instances through {@link \BambooPayment\BambooPaymentClient}.
- *
- * Service factories serve two purposes:
- *
- * 1. Expose properties for all services through the `__get()` magic method.
- * 2. Lazily initialize each service instance the first time the property for
- *    a given service is used.
- */
 abstract class AbstractServiceFactory
 {
 
@@ -34,11 +24,11 @@ abstract class AbstractServiceFactory
     /**
      * @param BambooPaymentClient $client
      */
-    public function __construct(\BambooPayment\Core\BambooPaymentClient $client)
+    public function __construct(BambooPaymentClient $client)
     {
-        $this->client = $client;
+        $this->client   = $client;
         $this->services = [];
-    }//end __construct()
+    }
 
     /**
      * @param string $name
@@ -56,7 +46,7 @@ abstract class AbstractServiceFactory
     {
         $serviceClass = $this->getServiceClass($name);
         if ($serviceClass !== null) {
-            if ( ! array_key_exists($name, $this->services)) {
+            if (! array_key_exists($name, $this->services)) {
                 $this->services[$name] = new $serviceClass($this->client);
             }
 
@@ -64,15 +54,15 @@ abstract class AbstractServiceFactory
         }
 
         return null;
-    }//end __get()
+    }
 
     public function __set($name, $value): void
     {
         $this->data[$name] = $value;
-    }//end __set()
+    }
 
     public function __isset(string $name): bool
     {
         return isset($this->data[$name]);
-    }//end __isset()
-}//end class
+    }
+}
