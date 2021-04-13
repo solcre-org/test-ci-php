@@ -8,10 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 abstract class BaseTest extends TestCase
 {
-    public function mockApiRequest($filename, $endpoint): ApiRequest
+    public function mockApiRequest($filename, $endpoint, $statusCode = null): ApiRequest
     {
+        if ($statusCode === null) {
+            $statusCode = 200;
+        }
+
         $apiRequest = $this->createPartialMock(ApiRequest::class, ['request']);
-        $apiRequest->method('request')->willReturn(new ApiResponse($this->getMockData($filename, $endpoint), 200));
+        $apiRequest->method('request')->willReturn(new ApiResponse($this->getMockData($filename, $endpoint), $statusCode));
 
         return $apiRequest;
     }

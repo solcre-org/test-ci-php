@@ -2,7 +2,6 @@
 
 namespace BambooPayment\Core;
 
-use BambooPayment\Exception\AuthenticationException;
 use BambooPayment\Exception\InvalidArgumentException;
 use function is_string;
 use function preg_match;
@@ -16,6 +15,8 @@ class BambooPaymentClient
 {
     private const DEFAULT_API_BASE = 'https://api.siemprepago.com/';
     private const DEFAULT_API_TESTING_BASE = 'https://testapi.siemprepago.com/';
+    public const ARRAY_ERROR_KEY = 'Errors';
+    public const ARRAY_RESULT_KEY = 'Response';
 
     private ?CoreServiceFactory $coreServiceFactory = null;
     private array $config;
@@ -28,7 +29,7 @@ class BambooPaymentClient
 
     public function __construct(array $config)
     {
-        if (! isset($config['api_key'])) {
+        if ( ! isset($config['api_key'])) {
             throw new InvalidArgumentException('Must provide a api key');
         }
 
@@ -47,9 +48,9 @@ class BambooPaymentClient
     /**
      * Gets the API key used by the client to send requests.
      *
-     * @return null|string the API key used by the client to send requests
+     * @return string the API key used by the client to send requests
      */
-    public function getApiKey(): ?string
+    public function getApiKey(): string
     {
         return $this->config['api_key'];
     }
@@ -96,26 +97,6 @@ class BambooPaymentClient
 //    }
 
     /**
-     * @return string
-     *
-     * @throws AuthenticationException
-     */
-    private function apiKeyForRequest(): string
-    {
-        $apiKey = $this->getApiKey();
-
-        if ($apiKey === null) {
-            $msg = 'No API key provided. Set your API key when constructing the '
-                . 'BambooPaymentClient instance, or provide it on a per-request basis '
-                . 'using the `api_key` key in the $opts argument.';
-
-            throw new \BambooPayment\Exception\AuthenticationException($msg);
-        }
-
-        return $apiKey;
-    }
-
-    /**
      * @param array<string, mixed> $config
      *
      * @throws InvalidArgumentException
@@ -124,25 +105,25 @@ class BambooPaymentClient
     {
         // api_key
         if ($config['api_key'] !== null && ! is_string($config['api_key'])) {
-            throw new \BambooPayment\Exception\InvalidArgumentException('api_key must be null or a string');
+            throw new InvalidArgumentException('api_key must be null or a string');
         }
 
         if ($config['api_key'] !== null && ($config['api_key'] === '')) {
             $msg = 'api_key cannot be the empty string';
 
-            throw new \BambooPayment\Exception\InvalidArgumentException($msg);
+            throw new InvalidArgumentException($msg);
         }
 
         if ($config['api_key'] !== null && (preg_match('/\s/', $config['api_key']))) {
             $msg = 'api_key cannot contain whitespace';
 
-            throw new \BambooPayment\Exception\InvalidArgumentException($msg);
+            throw new InvalidArgumentException($msg);
         }
     }
 
     public function __get($name)
     {
-        if (! $this->coreServiceFactory instanceof CoreServiceFactory) {
+        if ( ! $this->coreServiceFactory instanceof CoreServiceFactory) {
             $this->coreServiceFactory = new CoreServiceFactory($this);
         }
 
@@ -152,24 +133,22 @@ class BambooPaymentClient
     public function __set($name, $value)
     {
         $this->data[$name] = $value;
-    }//end __set()
+    }
 
     public function __isset($name): bool
     {
         return isset($this->data[$name]);
-    }//end __isset()
+    }
 
     /**
      * @param string $method
      * @param string $path
-     * @param null $params
-     * @param null $opts
+     * @param array|null $params
+     * @param array|null $opts
      *
      * @return ApiRequest
-     *
-     * @throws AuthenticationException
      */
-    public function createApiRequest(string $method, string $path, $params = null, $opts = null): ApiRequest
+    public function createApiRequest(string $method, string $path, ?array $params = null, ?array $opts = null): ApiRequest
     {
         if ($opts === null) {
             $opts = [];
@@ -179,6 +158,6 @@ class BambooPaymentClient
             $params = [];
         }
 
-        return new ApiRequest($method, $path, $params, $this->apiKeyForRequest(), $this->getApiBase(), []);
+        return new ApiRequest($method, $path, $params, $this->getApiKey(), $this->getApiBase(), []);
     }
 }

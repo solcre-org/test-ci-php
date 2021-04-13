@@ -3,7 +3,6 @@
 namespace BambooPayment\Service;
 
 use BambooPayment\Core\AbstractService;
-use BambooPayment\Entity\BambooPaymentObject;
 use BambooPayment\Entity\Customer;
 use function sprintf;
 
@@ -17,17 +16,17 @@ class CustomerService extends AbstractService
         return $this->request('post', self::BASE_URI, Customer::class, $params, $opts);
     }
 
-    public function delete(int $id, ?array $params = null, ?array $opts = null): BambooPaymentObject
+    public function delete(int $id, ?array $params = null, ?array $opts = null): Customer
     {
         return $this->request('delete', sprintf(self::BASE_URI . '/%s', $id), Customer::class, $params, $opts);
     }
 
-    public function fetch(int $id): BambooPaymentObject
+    public function fetch(int $id): Customer
     {
         return $this->request('get', sprintf(self::BASE_URI . '/%s', $id), Customer::class);
     }
 
-    public function update(int $id, ?array $params = null, ?array $opts = null): BambooPaymentObject
+    public function update(int $id, ?array $params = null, ?array $opts = null): Customer
     {
         return $this->request('post', sprintf(self::UPDATE_URI, $id), Customer::class, $params, $opts);
     }

@@ -5,3 +5,6 @@ includes:
 parameters:
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Variable method call on Psr\\Http\\Client\\ClientInterface.#'
+        - '#Method (.*) should return (.*) but returns BambooPayment\\Entity\\BambooPaymentObject.#'

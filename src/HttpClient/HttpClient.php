@@ -2,6 +2,7 @@
 
 namespace BambooPayment\HttpClient;
 
+use BambooPayment\Exception\BadMethodCallException;
 use BambooPayment\Exception\UnexpectedValueException;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Client\ClientInterface;
@@ -42,10 +43,14 @@ final class HttpClient
             throw new UnexpectedValueException("Unrecognized method {$method}");
         }
 
-        return $this->client->$method($absUrl, [
-            'headers' => $headers,
-            'json' => $params,
-            'http_errors' => false
-        ]);
+        if (\is_callable([$this->client, $method])) {
+            return $this->client->$method($absUrl, [
+                'headers' => $headers,
+                'json' => $params,
+                'http_errors' => false
+            ]);
+        }
+
+        throw new BadMethodCallException("Method: {$method} does not exists");
     }
 }

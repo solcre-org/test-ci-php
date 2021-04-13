@@ -2,6 +2,12 @@
 
 namespace BambooPayment\Core;
 
+use BambooPayment\Exception\ApiErrorException;
+use BambooPayment\Exception\AuthenticationException;
+use BambooPayment\Exception\ExceptionInterface;
+use BambooPayment\Exception\InvalidRequestException;
+use BambooPayment\Exception\PermissionException;
+use BambooPayment\Exception\UnknownApiErrorException;
 use BambooPayment\HttpClient\HttpClient;
 use Psr\Http\Message\ResponseInterface;
 use function array_merge;
@@ -33,7 +39,7 @@ class ApiRequest
     private string $apiKey;
 
     /**
-     * @var HttpClient
+     * @var HttpClient|null
      */
     private static ?HttpClient $_httpClient = null;
 
@@ -45,6 +51,7 @@ class ApiRequest
      * @param array $params
      * @param string $apiKey
      * @param string $apiBase
+     * @param array $headers
      */
     public function __construct(string $method, string $path, array $params, string $apiKey, string $apiBase, array $headers)
     {
@@ -62,67 +69,6 @@ class ApiRequest
         return new ApiResponse($response->getBody(), $response->getStatusCode(), $response->getHeaders());
     }
 
-//    public function handleErrorResponse($rbody, $rcode, $rheaders, $resp)
-//    {
-//        if (! is_array($resp) || ! isset($resp['error'])) {
-//            $msg = "Invalid response object from API: {$rbody} "
-//                . "(HTTP response code was {$rcode})";
-//
-//            throw new UnexpectedValueException($msg);
-//        }
-//
-//        $errorData = $resp['error'];
-//
-//        $error = null;
-//        if (is_string($errorData)) {
-//            $error = self::_specificOAuthError($rbody, $rcode, $rheaders, $resp, $errorData);
-//        }
-//        if (! $error) {
-//            $error = self::_specificAPIError($rbody, $rcode, $rheaders, $resp, $errorData);
-//        }
-//
-//        throw $error;
-//    }
-//    private static function _specificAPIError($rbody, $rcode, $rheaders, $resp, $errorData)
-//    {
-//        $msg = isset($errorData['message']) ? $errorData['message'] : null;
-//        $param = isset($errorData['param']) ? $errorData['param'] : null;
-//        $code = isset($errorData['code']) ? $errorData['code'] : null;
-//        $type = isset($errorData['type']) ? $errorData['type'] : null;
-//        $declineCode = isset($errorData['decline_code']) ? $errorData['decline_code'] : null;
-//
-//        switch ($rcode) {
-//            case 400:
-//                // 'rate_limit' code is deprecated, but left here for backwards compatibility
-//                // for API versions earlier than 2015-09-08
-//                if ('rate_limit' === $code) {
-//                    return Exception\RateLimitException::factory($msg, $rcode, $rbody, $resp, $rheaders, $code, $param);
-//                }
-//                if ('idempotency_error' === $type) {
-//                    return Exception\IdempotencyException::factory($msg, $rcode, $rbody, $resp, $rheaders, $code);
-//                }
-//
-//            // no break
-//            case 404:
-//                return Exception\InvalidRequestException::factory($msg, $rcode, $rbody, $resp, $rheaders, $code, $param);
-//
-//            case 401:
-//                return Exception\AuthenticationException::factory($msg, $rcode, $rbody, $resp, $rheaders, $code);
-//
-//            case 402:
-//                return Exception\CardException::factory($msg, $rcode, $rbody, $resp, $rheaders, $code, $declineCode, $param);
-//
-//            case 403:
-//                return Exception\PermissionException::factory($msg, $rcode, $rbody, $resp, $rheaders, $code);
-//
-//            case 429:
-//                return Exception\RateLimitException::factory($msg, $rcode, $rbody, $resp, $rheaders, $code, $param);
-//
-//            default:
-//                return Exception\UnknownApiErrorException::factory($msg, $rcode, $rbody, $resp, $rheaders, $code);
-//        }
-//    }
-
     /**
      * @static
      *
@@ -134,7 +80,7 @@ class ApiRequest
     {
         return [
             'Authorization' => 'Basic ' . $apiKey,
-            'Content-Type'  => 'application/json'
+            'Content-Type' => 'application/json'
         ];
     }
 
@@ -166,22 +112,38 @@ class ApiRequest
      */
     public function interpretResponse(ApiResponse $apiResponse): array
     {
-        $rbody = $apiResponse->json;
-        $rcode = $apiResponse->code;
+        $body = $apiResponse->json;
+        $code = $apiResponse->code;
 
 //        $jsonError = \json_last_error();
-//        if (null === $resp && \JSON_ERROR_NONE !== $jsonError) {
+//        if (null === $body && \JSON_ERROR_NONE !== $jsonError) {
 //            $msg = "Invalid response body from API: {$rbody} "
 //                . "(HTTP response code was {$rcode}, json_last_error() was {$jsonError})";
 //
 //            throw new UnexpectedValueException($msg, $rcode);
 //        }
 
-//        if ($rcode < 200 || $rcode >= 300) {
-//            $this->handleErrorResponse($rbody, $rcode, $apiResponse->headers);
-//        }
+        if ($code < 200 || $code >= 300) {
+            $this->handleErrorResponse($body, $code);
+        }
 
-        return $rbody['Response'];
+        return $body[BambooPaymentClient::ARRAY_RESULT_KEY];
+    }
+
+    /**
+     * @param array|null $body
+     * @param int $code
+     *
+     * @throws UnknownApiErrorException|ApiErrorException|PermissionException|AuthenticationException|InvalidRequestException
+     */
+    private function handleErrorResponse(?array $body, int $code): void
+    {
+        $errorHandler = new ErrorHandler();
+        try {
+            $errorHandler->handleErrorResponse($body, $code);
+        } catch (ExceptionInterface $e) {
+            throw $e;
+        }
     }
 
     /**
@@ -199,7 +161,7 @@ class ApiRequest
      */
     private function httpClient(): HttpClient
     {
-        if (! self::$_httpClient instanceof HttpClient) {
+        if ( ! self::$_httpClient instanceof HttpClient) {
             self::$_httpClient = HttpClient::instance();
         }
 
