@@ -7,6 +7,9 @@ use BambooPayment\Exception\ApiBadParametersException;
 use BambooPayment\Service\CustomerService;
 use BambooPaymentTests\BaseTest;
 
+/**
+ * @covers \BambooPayment\Service\CustomerService
+ */
 class CustomerServiceTest extends BaseTest
 {
     public function testFetchCustomer(): void

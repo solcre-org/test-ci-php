@@ -15,13 +15,13 @@ class BambooPaymentClient
 {
     private const DEFAULT_API_BASE         = 'https://api.siemprepago.com/';
     private const DEFAULT_API_TESTING_BASE = 'https://testapi.siemprepago.com/';
-    public const ARRAY_ERROR_KEY           = 'Errors';
-    public const ARRAY_RESULT_KEY          = 'Response';
+    public const  ARRAY_ERROR_KEY          = 'Errors';
+    public const  ARRAY_RESULT_KEY         = 'Response';
 
     private ?CoreServiceFactory $coreServiceFactory = null;
     private array $config;
-
     private array $defaultOpts;
+
     /**
      * @var AbstractService|AbstractServiceFactory|null
      */
@@ -82,41 +82,18 @@ class BambooPaymentClient
         return $apiRequest->interpretResponse($apiResponse);
     }
 
-//    public function requestCollection(string $method, string $path, array $params, $opts): Collection
-//    {
-//        $obj = $this->request($method, $path, $params, $opts);
-//        if (! ($obj instanceof Collection)) {
-//            $received_class = get_class($obj);
-//            $msg = "Expected to receive `BambooPayment\\Collection` object from BambooPayment API. Instead received `{$received_class}`.";
-//
-//            throw new UnexpectedValueException($msg);
-//        }
-//        $obj->setFilters($params);
-//
-//        return $obj;
-//    }
-
-    /**
-     * @param array<string, mixed> $config
-     *
-     * @throws InvalidArgumentException
-     */
     private function validateConfig(array $config): void
     {
-        // api_key
-        if ($config['api_key'] !== null && ! is_string($config['api_key'])) {
-            throw new InvalidArgumentException('api_key must be null or a string');
+        $msg = null;
+        if (! is_string($config['api_key'])) {
+            $msg = 'api_key must be a string';
         }
 
-        if ($config['api_key'] !== null && ($config['api_key'] === '')) {
-            $msg = 'api_key cannot be the empty string';
-
-            throw new InvalidArgumentException($msg);
-        }
-
-        if ($config['api_key'] !== null && (preg_match('/\s/', $config['api_key']))) {
+        if (preg_match('/\s/', $config['api_key'])) {
             $msg = 'api_key cannot contain whitespace';
+        }
 
+        if ($msg !== null) {
             throw new InvalidArgumentException($msg);
         }
     }

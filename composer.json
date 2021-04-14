@@ -43,9 +43,10 @@
     "phpcs": "php-cs-fixer fix -vvv --diff --dry-run --allow-risky=yes --ansi",
     "phpcs:fix": "php-cs-fixer fix -vvv --allow-risky=yes --ansi",
     "phpstan": "phpstan analyse -l 5 -c phpstan.neon src tests --ansi --memory-limit=192M",
-    "phpunit": "phpunit --coverage-text",
+    "phpunit-with-coverage": "phpunit --coverage-text",
+    "phpunit": "phpunit --no-coverage",
     "test": [
-      "@phpunit",
+      "@phpunit-with-coverage",
       "@phpstan",
       "@phpcs:fix",
       "@phpcs"
