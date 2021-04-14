@@ -17,10 +17,9 @@ abstract class AbstractService
         string $method,
         string $path,
         string $class,
-        ?array $params = null,
-        ?array $opts = null
+        ?array $params = null
     ): BambooPaymentObject {
-        $response = $this->client->request($this->client->createApiRequest($method, $path, $params, $opts));
+        $response = $this->client->request($this->client->createApiRequest($method, $path, $params));
 
         return $this->convertToBambooPaymentObject($class, $response);
     }
@@ -32,7 +31,7 @@ abstract class AbstractService
         ?array $params = null,
         ?array $opts = null
     ): array {
-        $response = $this->client->request($this->client->createApiRequest($method, $path, $params, $opts));
+        $response = $this->client->request($this->client->createApiRequest($method, $path, $params));
 
         $result = [];
         foreach ($response as $item) {

@@ -12,14 +12,14 @@ class CustomerService extends AbstractService
     private const FETCH_USER_BY_EMAIL = 'v1/api/customer/GetCustomerByEmail';
     private const UPDATE_URI          = 'v1/api/customer/%s/update';
 
-    public function create(?array $params = null, ?array $opts = null): Customer
+    public function create(?array $params = null): Customer
     {
-        return $this->request('post', self::BASE_URI, Customer::class, $params, $opts);
+        return $this->request('post', self::BASE_URI, Customer::class, $params);
     }
 
-    public function delete(int $id, ?array $params = null, ?array $opts = null): Customer
+    public function delete(int $id, ?array $params = null): Customer
     {
-        return $this->request('delete', sprintf(self::BASE_URI . '/%s', $id), Customer::class, $params, $opts);
+        return $this->request('delete', sprintf(self::BASE_URI . '/%s', $id), Customer::class, $params);
     }
 
     public function fetch(int $id): Customer
@@ -39,8 +39,8 @@ class CustomerService extends AbstractService
         );
     }
 
-    public function update(int $id, ?array $params = null, ?array $opts = null): Customer
+    public function update(int $id, ?array $params = null): Customer
     {
-        return $this->request('post', sprintf(self::UPDATE_URI, $id), Customer::class, $params, $opts);
+        return $this->request('post', sprintf(self::UPDATE_URI, $id), Customer::class, $params);
     }
 }

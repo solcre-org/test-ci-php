@@ -52,9 +52,6 @@ class ErrorHandler
 
         switch ($code) {
             case 400:
-//                if ('idempotency_error' === $type) {
-//                    return Exception\IdempotencyException($msg, $rcode, $rbody, $resp, $rheaders, $code);
-//                }
                 throw new ApiBadParametersException($bambooPaymentMessage, $code, $body, $bambooPaymentErrorCode, $bambooPaymentDetail);
             case 404:
                 throw new InvalidRequestException($bambooPaymentMessage, $code, $body, $bambooPaymentErrorCode, $bambooPaymentDetail);

@@ -6,7 +6,6 @@ use BambooPayment\Service\CustomerService;
 
 class CoreServiceFactory extends AbstractServiceFactory
 {
-
     /***
      * @var array<string, string>
      */

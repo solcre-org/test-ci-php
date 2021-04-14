@@ -121,14 +121,6 @@ class ApiRequest
         $body = $apiResponse->json;
         $code = $apiResponse->code;
 
-//        $jsonError = \json_last_error();
-//        if (null === $body && \JSON_ERROR_NONE !== $jsonError) {
-//            $msg = "Invalid response body from API: {$rbody} "
-//                . "(HTTP response code was {$rcode}, json_last_error() was {$jsonError})";
-//
-//            throw new UnexpectedValueException($msg, $rcode);
-//        }
-
         if ($code < 200 || $code >= 300) {
             $this->handleErrorResponse($body, $code);
         }

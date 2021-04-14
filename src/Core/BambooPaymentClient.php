@@ -8,8 +8,6 @@ use function preg_match;
 
 /**
  * Client used to send requests to BambooPayment's API.
- *
- * {@property} \BambooPayment\Service\CustomerService $customers
  */
 class BambooPaymentClient
 {
@@ -20,7 +18,6 @@ class BambooPaymentClient
 
     private ?CoreServiceFactory $coreServiceFactory = null;
     private array $config;
-    private array $defaultOpts;
 
     /**
      * @var AbstractService|AbstractServiceFactory|null
@@ -41,8 +38,7 @@ class BambooPaymentClient
         }
 
         $this->validateConfig($config);
-        $this->config      = $config;
-        $this->defaultOpts = [];
+        $this->config = $config;
     }
 
     /**
@@ -53,16 +49,6 @@ class BambooPaymentClient
     public function getApiKey(): string
     {
         return $this->config['api_key'];
-    }
-
-    /**
-     * Gets the client ID used by the client in OAuth requests.
-     *
-     * @return null|string the client ID used by the client in OAuth requests
-     */
-    public function getClientId(): ?string
-    {
-        return $this->config['client_id'];
     }
 
     /**
@@ -121,16 +107,11 @@ class BambooPaymentClient
      * @param string $method
      * @param string $path
      * @param array|null $params
-     * @param array|null $opts
      *
      * @return ApiRequest
      */
-    public function createApiRequest(string $method, string $path, ?array $params = null, ?array $opts = null): ApiRequest
+    public function createApiRequest(string $method, string $path, ?array $params = null): ApiRequest
     {
-        if ($opts === null) {
-            $opts = [];
-        }
-
         if ($params === null) {
             $params = [];
         }
