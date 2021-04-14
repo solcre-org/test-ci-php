@@ -22,4 +22,10 @@ jobs:
           tools: composer:v2
       - run: composer update --no-progress ${{ matrix.composer-flags }}
       - run: composer phpunit
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/clover.xml -v
       - run: composer phpstan
