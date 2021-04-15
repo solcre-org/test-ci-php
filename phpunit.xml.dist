@@ -13,8 +13,7 @@
          stopOnFailure="false"
          cacheResultFile=".phpunit.cache/test-results"
          executionOrder="depends,defects"
-         failOnRisky="true"
-         failOnWarning="true">
+         failOnRisky="true">
     <testsuites>
         <testsuite name="default">
             <directory suffix="Test.php">tests</directory>

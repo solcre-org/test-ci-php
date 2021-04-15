@@ -14,17 +14,17 @@ class CustomerService extends AbstractService
 
     public function create(?array $params = null): Customer
     {
-        return $this->request('post', self::BASE_URI, Customer::class, $params);
+        return $this->request('post', self::BASE_URI, $params);
     }
 
     public function delete(int $id, ?array $params = null): Customer
     {
-        return $this->request('delete', sprintf(self::BASE_URI . '/%s', $id), Customer::class, $params);
+        return $this->request('delete', sprintf(self::BASE_URI . '/%s', $id), $params);
     }
 
     public function fetch(int $id): Customer
     {
-        return $this->request('get', sprintf(self::BASE_URI . '/%s', $id), Customer::class);
+        return $this->request('get', sprintf(self::BASE_URI . '/%s', $id));
     }
 
     public function fetchByEmail(string $email): array
@@ -32,7 +32,6 @@ class CustomerService extends AbstractService
         return $this->requestCollection(
             'get',
             self::FETCH_USER_BY_EMAIL,
-            Customer::class,
             [
                 'email' => $email
             ]
@@ -41,6 +40,11 @@ class CustomerService extends AbstractService
 
     public function update(int $id, ?array $params = null): Customer
     {
-        return $this->request('post', sprintf(self::UPDATE_URI, $id), Customer::class, $params);
+        return $this->request('post', sprintf(self::UPDATE_URI, $id), $params);
+    }
+
+    public function getEntityClass(): string
+    {
+        return Customer::class;
     }
 }

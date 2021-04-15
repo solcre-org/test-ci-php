@@ -6,33 +6,64 @@ namespace BambooPayment\Entity;
 
 class Customer extends BambooPaymentObject
 {
-    private ?int $CustomerId;
-    private ?string $Created;
-    private ?string $CommerceCustomerId;
-    private ?string $Owner;
-    private ?string $Commerce;
-    private ?string $Email;
-    private ?bool $Enabled;
-    private ?string $ShippingAddress;
-    private ?array $BillingAddress;
-    private ?array $AdditionalData;
-    private ?array $PaymentProfiles;
-    private ?string $CaptureURL;
-    private ?string $UniqueID;
-    private ?string $URL;
-    private ?string $https;
-    private ?string $FirstName;
-    private ?string $PrimerNombre;
-    private ?string $LastName;
-    private ?string $PrimerApellido;
-    private ?string $DocNumber;
-    private ?string $DocumentTypeId;
-    private ?string $PhoneNumber;
+    /** @var int */
+    private $CustomerId;
+
+    /** @var  string */
+    private $Created;
+
+    /** @var string |null */
+    private $CommerceCustomerId;
+
+    /** @var string|null */
+    private $Owner;
+
+    /** @var string */
+    private $Email;
+
+    /** @var bool|null */
+    private $Enabled;
+
+    /** @var string|null */
+    private $ShippingAddress;
+
+    /** @var array|null */
+    private $BillingAddress;
+
+    /** @var array|null */
+    private $AdditionalData;
+
+    /** @var array|null */
+    private $PaymentProfiles;
+
+    /** @var string|null */
+    private $CaptureURL;
+
+    /** @var string */
+    private $UniqueID;
+
+    /** @var string */
+    private $URL;
+
+    /** @var string|null */
+    private $FirstName;
+
+    /** @var string|null */
+    private $LastName;
+
+    /** @var string|null */
+    private $DocNumber;
+
+    /** @var string|null */
+    private $DocumentTypeId;
+
+    /** @var string|null */
+    private $PhoneNumber;
 
     /**
      * @return int
      */
-    public function getCustomerId(): ?int
+    public function getCustomerId(): int
     {
         return $this->CustomerId;
     }
@@ -40,7 +71,7 @@ class Customer extends BambooPaymentObject
     /**
      * @return string
      */
-    public function getCreated(): ?string
+    public function getCreated(): string
     {
         return $this->Created;
     }
@@ -62,17 +93,9 @@ class Customer extends BambooPaymentObject
     }
 
     /**
-     * @return string|null
-     */
-    public function getCommerce(): ?string
-    {
-        return $this->Commerce;
-    }
-
-    /**
      * @return string
      */
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->Email;
     }
@@ -128,7 +151,7 @@ class Customer extends BambooPaymentObject
     /**
      * @return string
      */
-    public function getUniqueID(): ?string
+    public function getUniqueID(): string
     {
         return $this->UniqueID;
     }
@@ -136,17 +159,9 @@ class Customer extends BambooPaymentObject
     /**
      * @return string
      */
-    public function getURL(): ?string
+    public function getURL(): string
     {
         return $this->URL;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHttps(): ?string
-    {
-        return $this->https;
     }
 
     /**
@@ -160,25 +175,9 @@ class Customer extends BambooPaymentObject
     /**
      * @return string|null
      */
-    public function getPrimerNombre(): ?string
-    {
-        return $this->PrimerNombre;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getLastName(): ?string
     {
         return $this->LastName;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPrimerApellido(): ?string
-    {
-        return $this->PrimerApellido;
     }
 
     /**

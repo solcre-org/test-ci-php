@@ -145,19 +145,9 @@ class ApiRequest
     }
 
     /**
-     * @static
-     *
-     * @param HttpClient $client
-     */
-    public static function setHttpClient(HttpClient $client): void
-    {
-        self::$_httpClient = $client;
-    }
-
-    /**
      * @return HttpClient
      */
-    private function httpClient(): HttpClient
+    public function httpClient(): HttpClient
     {
         if (! self::$_httpClient instanceof HttpClient) {
             self::$_httpClient = HttpClient::instance();

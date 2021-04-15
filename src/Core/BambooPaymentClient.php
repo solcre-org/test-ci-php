@@ -61,6 +61,13 @@ class BambooPaymentClient
         return $this->config['api_base'];
     }
 
+    /**
+     * @throws \BambooPayment\Exception\PermissionException
+     * @throws \BambooPayment\Exception\InvalidRequestException
+     * @throws \BambooPayment\Exception\AuthenticationException
+     * @throws \BambooPayment\Exception\ApiErrorException
+     * @throws \BambooPayment\Exception\UnknownApiErrorException
+     */
     public function request(ApiRequest $apiRequest): array
     {
         $apiResponse = $apiRequest->request();
@@ -93,11 +100,17 @@ class BambooPaymentClient
         return $this->coreServiceFactory->__get($name);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function __set($name, $value)
     {
         $this->data[$name] = $value;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function __isset($name): bool
     {
         return isset($this->data[$name]);

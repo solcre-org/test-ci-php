@@ -56,11 +56,17 @@ abstract class AbstractServiceFactory
         return null;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function __set($name, $value): void
     {
         $this->data[$name] = $value;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function __isset(string $name): bool
     {
         return isset($this->data[$name]);

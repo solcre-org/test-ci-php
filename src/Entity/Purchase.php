@@ -6,47 +6,102 @@ namespace BambooPayment\Entity;
 
 class Purchase extends BambooPaymentObject
 {
-    private ?int $PurchaseId;
-    private ?string $Created;
-    private ?string $TrxToken;
-    private int $Order;
-    private array $Transaction;
-    private bool $Capture;
-    private int $Amount;
-    private int $OriginalAmount;
-    private int $TaxableAmount;
-    private int $Tip;
-    private int $Installments;
-    private ?string $Currency;
-    private ?string $Description;
-    private ?array $Customer;
-    private ?string $RefundList;
-    private ?string $PlanID;
-    private ?string $UniqueID;
-    private ?string $AdditionalData;
-    private ?string $CustomerUserAgent;
-    private ?string $CustomerIP;
-    private ?string $URL;
-    private ?array $DataUY;
-    private ?string $DataDO;
-    private ?array $Acquirer;
-    private ?string $CommerceAction;
-    private int $PurchasePaymentProfileId;
-    private ?string $LoyaltyPlan;
-    private ?string $DeviceFingerprintId;
+    /** @var int */
+    private $PurchaseId;
+
+    /** @var string */
+    private $Created;
+
+    /** @var string|null */
+    private $TrxToken;
+
+    /** @var string */
+    private $Order;
+
+    /** @var array */
+    private $Transaction;
+
+    /** @var bool */
+    private $Capture;
+
+    /** @var float */
+    private $Amount;
+
+    /** @var float */
+    private $OriginalAmount;
+
+    /** @var float */
+    private $TaxableAmount;
+
+    /** @var float */
+    private $Tip;
+
+    /** @var int */
+    private $Installments;
+
+    /** @var string */
+    private $Currency;
+
+    /** @var string */
+    private $Description;
+
+    /** @var array */
+    private $Customer;
+
+    /** @var array */
+    private $RefundList;
+
+    /** @var string|null */
+    private $PlanID;
+
+    /** @var string|null */
+    private $UniqueID;
+
+    /** @var array */
+    private $AdditionalData;
+
+    /** @var string|null */
+    private $CustomerUserAgent;
+
+    /** @var string|null */
+    private $CustomerIP;
+
+    /** @var string */
+    private $URL;
+
+    /** @var array */
+    private $DataUY;
+
+    /** @var string|null */
+    private $DataDO;
+
+    /** @var array */
+    private $Acquirer;
+
+    /** @var string|null */
+    private $CommerceAction;
+
+    /** @var int */
+    private $PurchasePaymentProfileId;
+
+    /** @var string|null */
+    private $LoyaltyPlan;
+
+    /** @var string|null */
+    private $DeviceFingerprId;
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getPurchaseId(): ?int
+    public function getPurchaseId(): int
     {
         return $this->PurchaseId;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCreated(): ?string
+    public function getCreated(): string
     {
         return $this->Created;
     }
@@ -60,9 +115,9 @@ class Purchase extends BambooPaymentObject
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getOrder(): int
+    public function getOrder(): string
     {
         return $this->Order;
     }
@@ -84,33 +139,33 @@ class Purchase extends BambooPaymentObject
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getAmount(): int
+    public function getAmount(): float
     {
         return $this->Amount;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getOriginalAmount(): int
+    public function getOriginalAmount(): float
     {
         return $this->OriginalAmount;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getTaxableAmount(): int
+    public function getTaxableAmount(): float
     {
         return $this->TaxableAmount;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getTip(): int
+    public function getTip(): float
     {
         return $this->Tip;
     }
@@ -124,33 +179,33 @@ class Purchase extends BambooPaymentObject
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCurrency(): ?string
+    public function getCurrency(): string
     {
         return $this->Currency;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->Description;
     }
 
     /**
-     * @return array|null
+     * @return array
      */
-    public function getCustomer(): ?array
+    public function getCustomer(): array
     {
         return $this->Customer;
     }
 
     /**
-     * @return string|null
+     * @return array
      */
-    public function getRefundList(): ?string
+    public function getRefundList(): array
     {
         return $this->RefundList;
     }
@@ -172,9 +227,9 @@ class Purchase extends BambooPaymentObject
     }
 
     /**
-     * @return string|null
+     * @return array
      */
-    public function getAdditionalData(): ?string
+    public function getAdditionalData(): array
     {
         return $this->AdditionalData;
     }
@@ -196,17 +251,17 @@ class Purchase extends BambooPaymentObject
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getURL(): ?string
+    public function getURL(): string
     {
         return $this->URL;
     }
 
     /**
-     * @return array|null
+     * @return array
      */
-    public function getDataUY(): ?array
+    public function getDataUY(): array
     {
         return $this->DataUY;
     }
@@ -220,9 +275,9 @@ class Purchase extends BambooPaymentObject
     }
 
     /**
-     * @return array|null
+     * @return array
      */
-    public function getAcquirer(): ?array
+    public function getAcquirer(): array
     {
         return $this->Acquirer;
     }
@@ -254,8 +309,8 @@ class Purchase extends BambooPaymentObject
     /**
      * @return string|null
      */
-    public function getDeviceFingerprintId(): ?string
+    public function getDeviceFingerprId(): ?string
     {
-        return $this->DeviceFingerprintId;
+        return $this->DeviceFingerprId;
     }
 }

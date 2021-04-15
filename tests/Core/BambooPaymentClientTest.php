@@ -4,6 +4,7 @@ namespace BambooPaymentTests\Core;
 
 use BambooPayment\Core\ApiRequest;
 use BambooPayment\Core\BambooPaymentClient;
+use BambooPayment\Service\CustomerService;
 use PHPUnit\Framework\TestCase;
 
 class BambooPaymentClientTest extends TestCase
@@ -83,5 +84,31 @@ class BambooPaymentClientTest extends TestCase
         $apiRequestExpected = new ApiRequest('post', '/aaa', [], '123456', 'https://testapi.siemprepago.com/', []);
 
         self::assertEquals($apiRequestExpected, $bambooPaymentClient->createApiRequest('post', '/aaa'));
+    }
+
+    public function testGetService(): void
+    {
+        $bambooPaymentClient = new BambooPaymentClient(
+            [
+                'api_key' => '123456',
+                'testing' => true
+            ]
+        );
+
+        /* @phpstan-ignore-next-line */
+        self::assertInstanceOf(CustomerService::class, $bambooPaymentClient->customers);
+    }
+
+    public function testGetServiceWithNonExistent(): void
+    {
+        $bambooPaymentClient = new BambooPaymentClient(
+            [
+                'api_key' => '123456',
+                'testing' => true
+            ]
+        );
+
+        /* @phpstan-ignore-next-line */
+        self::assertNull($bambooPaymentClient->aaa);
     }
 }

@@ -11,6 +11,11 @@ class PurchaseService extends AbstractService
 
     public function create(?array $params = null): Purchase
     {
-        return $this->request('post', self::BASE_URI, Purchase::class, $params);
+        return $this->request('post', self::BASE_URI, $params);
+    }
+
+    public function getEntityClass(): string
+    {
+        return Purchase::class;
     }
 }
