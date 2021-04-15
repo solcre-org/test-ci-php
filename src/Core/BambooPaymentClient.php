@@ -62,7 +62,6 @@ class BambooPaymentClient
     }
 
     /**
-     * @throws \BambooPayment\Exception\PermissionException
      * @throws \BambooPayment\Exception\InvalidRequestException
      * @throws \BambooPayment\Exception\AuthenticationException
      * @throws \BambooPayment\Exception\ApiErrorException

@@ -15,7 +15,6 @@ abstract class AbstractService
 
     /**
      * @throws \BambooPayment\Exception\InvalidRequestException
-     * @throws \BambooPayment\Exception\PermissionException
      * @throws \BambooPayment\Exception\AuthenticationException
      * @throws \BambooPayment\Exception\ApiErrorException
      * @throws \BambooPayment\Exception\UnknownApiErrorException

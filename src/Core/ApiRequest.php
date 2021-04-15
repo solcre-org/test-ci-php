@@ -6,7 +6,6 @@ use BambooPayment\Exception\ApiErrorException;
 use BambooPayment\Exception\AuthenticationException;
 use BambooPayment\Exception\ExceptionInterface;
 use BambooPayment\Exception\InvalidRequestException;
-use BambooPayment\Exception\PermissionException;
 use BambooPayment\Exception\UnknownApiErrorException;
 use BambooPayment\HttpClient\HttpClient;
 use Psr\Http\Message\ResponseInterface;
@@ -113,7 +112,6 @@ class ApiRequest
      * @throws ApiErrorException
      * @throws AuthenticationException
      * @throws InvalidRequestException
-     * @throws PermissionException
      * @throws UnknownApiErrorException
      */
     public function interpretResponse(ApiResponse $apiResponse): array
@@ -132,7 +130,7 @@ class ApiRequest
      * @param array|null $body
      * @param int $code
      *
-     * @throws UnknownApiErrorException|ApiErrorException|PermissionException|AuthenticationException|InvalidRequestException
+     * @throws UnknownApiErrorException|ApiErrorException|AuthenticationException|InvalidRequestException
      */
     private function handleErrorResponse(?array $body, int $code): void
     {

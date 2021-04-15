@@ -6,7 +6,6 @@ use BambooPayment\Exception\ApiBadParametersException;
 use BambooPayment\Exception\ApiErrorException;
 use BambooPayment\Exception\AuthenticationException;
 use BambooPayment\Exception\InvalidRequestException;
-use BambooPayment\Exception\PermissionException;
 use BambooPayment\Exception\UnexpectedValueException;
 use BambooPayment\Exception\UnknownApiErrorException;
 use function is_array;
@@ -15,7 +14,6 @@ class ErrorHandler
 {
     /**
      * @throws ApiBadParametersException
-     * @throws PermissionException
      * @throws InvalidRequestException
      * @throws ApiErrorException
      * @throws AuthenticationException
@@ -41,7 +39,6 @@ class ErrorHandler
      * @throws ApiBadParametersException
      * @throws AuthenticationException
      * @throws InvalidRequestException
-     * @throws PermissionException
      * @throws UnknownApiErrorException
      */
     private function throwSpecificException(array $errorData, int $code, array $body): void
@@ -58,9 +55,6 @@ class ErrorHandler
 
             case 401:
                 throw new AuthenticationException($bambooPaymentMessage, $code, $body, $bambooPaymentErrorCode, $bambooPaymentDetail);
-
-            case 403:
-                throw new PermissionException($bambooPaymentMessage, $code, $body, $bambooPaymentErrorCode, $bambooPaymentDetail);
 
             default:
                 throw new UnknownApiErrorException($bambooPaymentMessage, $code, $body, $bambooPaymentErrorCode, $bambooPaymentDetail);
