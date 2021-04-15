@@ -3,6 +3,7 @@
 namespace BambooPayment\Core;
 
 use BambooPayment\Service\CustomerService;
+use BambooPayment\Service\PurchaseService;
 
 class CoreServiceFactory extends AbstractServiceFactory
 {
@@ -12,6 +13,7 @@ class CoreServiceFactory extends AbstractServiceFactory
     private static array $classMap
         = [
             'customers' => CustomerService::class,
+            'purchases' => PurchaseService::class,
         ];
 
     public function getServiceClass(string $name): ?string

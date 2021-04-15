@@ -45,7 +45,7 @@ class Purchase extends BambooPaymentObject
     /** @var string */
     private $Description;
 
-    /** @var array */
+    /** @var \BambooPayment\Entity\Customer */
     private $Customer;
 
     /** @var array */
@@ -89,6 +89,33 @@ class Purchase extends BambooPaymentObject
 
     /** @var string|null */
     private $DeviceFingerprId;
+
+    public function hydrate(array $data): self
+    {
+        $customer         = new Customer();
+        $data['Customer'] = $customer->hydrate($data['Customer']);
+
+//        $rollbacksHydrated = [];
+//        $rollbacks = $data['RefundList'] ?? [];
+//        if (\count($rollbacks) > 0) {
+//            foreach ($rollbacks as $rollbackData) {
+//                $rollback =  new Rol
+//                $rollbacksHydrated[] =
+//            }
+//        }
+
+        $refundHydrated = [];
+        $refunds        = $data['RefundList'] ?? [];
+        if (\count($refunds) > 0) {
+            foreach ($refunds as $refundData) {
+                $refund           = new Refund();
+                $refundHydrated[] = $refund->hydrate($refundData);
+            }
+            $data['RefundList'] = $refundHydrated;
+        }
+
+        return parent::hydrate($data);
+    }
 
     /**
      * @return int
@@ -195,15 +222,15 @@ class Purchase extends BambooPaymentObject
     }
 
     /**
-     * @return array
+     * @return \BambooPayment\Entity\Customer
      */
-    public function getCustomer(): array
+    public function getCustomer(): Customer
     {
         return $this->Customer;
     }
 
     /**
-     * @return array
+     * @return array<\BambooPayment\Entity\Refund>
      */
     public function getRefundList(): array
     {

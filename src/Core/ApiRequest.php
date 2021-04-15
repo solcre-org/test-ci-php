@@ -4,10 +4,10 @@ namespace BambooPayment\Core;
 
 use BambooPayment\Exception\ApiErrorException;
 use BambooPayment\Exception\AuthenticationException;
-use BambooPayment\Exception\ExceptionInterface;
 use BambooPayment\Exception\InvalidRequestException;
 use BambooPayment\Exception\UnknownApiErrorException;
 use BambooPayment\HttpClient\HttpClient;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use function array_merge;
 
@@ -119,9 +119,7 @@ class ApiRequest
         $body = $apiResponse->json;
         $code = $apiResponse->code;
 
-        if ($code < 200 || $code >= 300) {
-            $this->handleErrorResponse($body, $code);
-        }
+        $this->handleErrorResponse($body, $code);
 
         return $body[BambooPaymentClient::ARRAY_RESULT_KEY];
     }
@@ -136,8 +134,15 @@ class ApiRequest
     {
         $errorHandler = new ErrorHandler();
         try {
-            $errorHandler->handleErrorResponse($body, $code);
-        } catch (ExceptionInterface $e) {
+            if ($code < 200 || $code > 300) {
+                throw new InvalidRequestException('Invalid API route or response', $code, $body, null, null);
+            }
+
+            $errorData = $body[BambooPaymentClient::ARRAY_ERROR_KEY] ?? null;
+            if (\is_array($errorData) && \count($errorData) > 0) {
+                $errorHandler->handleErrorResponse($body, $code);
+            }
+        } catch (Exception $e) {
             throw $e;
         }
     }

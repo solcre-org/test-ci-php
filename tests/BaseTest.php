@@ -4,11 +4,12 @@ namespace BambooPaymentTests;
 
 use BambooPayment\Core\ApiRequest;
 use BambooPayment\Core\ApiResponse;
+use BambooPayment\Core\BambooPaymentClient;
 use PHPUnit\Framework\TestCase;
 
 abstract class BaseTest extends TestCase
 {
-    public function mockApiRequest($filename, $endpoint, $statusCode = null): ApiRequest
+    public function mockApiRequest(string $filename, string $endpoint, $statusCode = null): ApiRequest
     {
         if ($statusCode === null) {
             $statusCode = 200;
@@ -18,6 +19,14 @@ abstract class BaseTest extends TestCase
         $apiRequest->method('request')->willReturn(new ApiResponse($this->getMockData($filename, $endpoint), $statusCode));
 
         return $apiRequest;
+    }
+
+    public function createBambooClientWithApiRequestMocked(string $filename, string $endpoint, $statusCode = null): BambooPaymentClient
+    {
+        $bambooPaymentClient = $this->createPartialMock(BambooPaymentClient::class, ['createApiRequest']);
+        $bambooPaymentClient->method('createApiRequest')->willReturn($this->mockApiRequest($filename, $endpoint, $statusCode));
+
+        return $bambooPaymentClient;
     }
 
     /**

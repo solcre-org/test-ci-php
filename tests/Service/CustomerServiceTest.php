@@ -2,8 +2,7 @@
 
 namespace BambooPaymentTests\Service;
 
-use BambooPayment\Core\BambooPaymentClient;
-use BambooPayment\Exception\ApiBadParametersException;
+use BambooPayment\Exception\UnknownApiErrorException;
 use BambooPayment\Service\CustomerService;
 use BambooPaymentTests\BaseTest;
 
@@ -11,11 +10,8 @@ class CustomerServiceTest extends BaseTest
 {
     public function testFetchCustomer(): void
     {
-        $apiRequest = $this->mockApiRequest('customers', 'getCustomer');
-
-        $bambooPaymentClient = $this->createPartialMock(BambooPaymentClient::class, ['createApiRequest']);
-        $bambooPaymentClient->method('createApiRequest')->willReturn($apiRequest);
-        $service = new CustomerService($bambooPaymentClient);
+        $bambooPaymentClient = $this->createBambooClientWithApiRequestMocked('customers', 'getCustomer');
+        $service             = new CustomerService($bambooPaymentClient);
 
         $customer = $service->fetch(53479);
 
@@ -24,11 +20,8 @@ class CustomerServiceTest extends BaseTest
 
     public function testFetchCustomerByEmail(): void
     {
-        $apiRequest = $this->mockApiRequest('customers', 'getCustomerByEmail');
-
-        $bambooPaymentClient = $this->createPartialMock(BambooPaymentClient::class, ['createApiRequest']);
-        $bambooPaymentClient->method('createApiRequest')->willReturn($apiRequest);
-        $service = new CustomerService($bambooPaymentClient);
+        $bambooPaymentClient = $this->createBambooClientWithApiRequestMocked('customers', 'getCustomerByEmail');
+        $service             = new CustomerService($bambooPaymentClient);
 
         $customers = $service->fetchByEmail('Email222222@bamboopayment.com');
 
@@ -38,11 +31,8 @@ class CustomerServiceTest extends BaseTest
 
     public function testCustomerToArray(): void
     {
-        $apiRequest = $this->mockApiRequest('customers', 'getCustomer');
-
-        $bambooPaymentClient = $this->createPartialMock(BambooPaymentClient::class, ['createApiRequest']);
-        $bambooPaymentClient->method('createApiRequest')->willReturn($apiRequest);
-        $service = new CustomerService($bambooPaymentClient);
+        $bambooPaymentClient = $this->createBambooClientWithApiRequestMocked('customers', 'getCustomer');
+        $service             = new CustomerService($bambooPaymentClient);
 
         $customer = $service->fetch(53479)->toArray();
 
@@ -81,13 +71,10 @@ class CustomerServiceTest extends BaseTest
 
     public function testCreateCustomerWithoutEmail(): void
     {
-        $apiRequest = $this->mockApiRequest('customers', 'createCustomerWithoutEmail', 400);
+        $bambooPaymentClient = $this->createBambooClientWithApiRequestMocked('customers', 'createCustomerWithoutEmail');
+        $service             = new CustomerService($bambooPaymentClient);
 
-        $bambooPaymentClient = $this->createPartialMock(BambooPaymentClient::class, ['createApiRequest']);
-        $bambooPaymentClient->method('createApiRequest')->willReturn($apiRequest);
-        $service = new CustomerService($bambooPaymentClient);
-
-        $this->expectException(ApiBadParametersException::class);
+        $this->expectException(UnknownApiErrorException::class);
         $this->expectExceptionMessage('Email invalido');
 
         $service->create(

@@ -2,7 +2,6 @@
 
 namespace BambooPaymentTests\Service;
 
-use BambooPayment\Core\BambooPaymentClient;
 use BambooPayment\Service\PurchaseService;
 use BambooPaymentTests\BaseTest;
 
@@ -10,14 +9,33 @@ class PurchaseServiceTest extends BaseTest
 {
     public function testCreatePurchase(): void
     {
-        $apiRequest = $this->mockApiRequest('purchases', 'testCreatePurchase', 400);
+        $bambooPaymentClient = $this->createBambooClientWithApiRequestMocked('purchases', 'create');
+        $service             = new PurchaseService($bambooPaymentClient);
 
-        $bambooPaymentClient = $this->createPartialMock(BambooPaymentClient::class, ['createApiRequest']);
-        $bambooPaymentClient->method('createApiRequest')->willReturn($apiRequest);
-        $service = new PurchaseService($bambooPaymentClient);
+        $purchase = $service->create();
 
-        $payment = $service->create();
+        self::assertEquals(90335, $purchase->getPurchaseId());
+    }
 
-        self::assertEquals(90335, $payment->getPurchaseId());
+    public function testFetchPurchase(): void
+    {
+        $bambooPaymentClient = $this->createBambooClientWithApiRequestMocked('purchases', 'fetch');
+        $service             = new PurchaseService($bambooPaymentClient);
+
+        $purchase = $service->fetch(90511);
+        self::assertEquals(90511, $purchase->getPurchaseId());
+
+        $customer = $purchase->getCustomer();
+        self::assertEquals(53775, $customer->getCustomerId());
+    }
+
+    public function testRefund(): void
+    {
+        $bambooPaymentClient = $this->createBambooClientWithApiRequestMocked('purchases', 'refund');
+        $service             = new PurchaseService($bambooPaymentClient);
+
+        $purchase = $service->refund(90535);
+
+        self::assertCount(1, $purchase->getRefundList());
     }
 }
