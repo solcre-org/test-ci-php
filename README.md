@@ -1,3 +1,4 @@
+
 # bamboopayment-sdk
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
@@ -33,7 +34,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [link-github]: https://github.com/solcre-org/test-ci-php/actions?query=workflow%3A%22build%22
 
-[link-coveralls]: https://coveralls.io/github/solcre-org/test-ci-php?branch=main
+[link-coveralls]: https://coveralls.io/github/solcre-org/test-ci-php?branch=main&kill_cache=1
 
 [link-downloads]: https://packagist.org/packages/solcre/bamboopayment-sdk
 
