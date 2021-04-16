@@ -36,27 +36,11 @@ class Address extends BambooPaymentObject
     }
 
     /**
-     * @param int $AddressId
-     */
-    public function setAddressId(int $AddressId): void
-    {
-        $this->AddressId = $AddressId;
-    }
-
-    /**
      * @return int|null
      */
     public function getAddressType(): ?int
     {
         return $this->AddressType;
-    }
-
-    /**
-     * @param int|null $AddressType
-     */
-    public function setAddressType(?int $AddressType): void
-    {
-        $this->AddressType = $AddressType;
     }
 
     /**
@@ -68,27 +52,11 @@ class Address extends BambooPaymentObject
     }
 
     /**
-     * @param string|null $Country
-     */
-    public function setCountry(?string $Country): void
-    {
-        $this->Country = $Country;
-    }
-
-    /**
      * @return string|null
      */
     public function getState(): ?string
     {
         return $this->State;
-    }
-
-    /**
-     * @param string|null $State
-     */
-    public function setState(?string $State): void
-    {
-        $this->State = $State;
     }
 
     /**
@@ -100,27 +68,11 @@ class Address extends BambooPaymentObject
     }
 
     /**
-     * @param string $AddressDetail
-     */
-    public function setAddressDetail(string $AddressDetail): void
-    {
-        $this->AddressDetail = $AddressDetail;
-    }
-
-    /**
      * @return string|null
      */
     public function getPostalCode(): ?string
     {
         return $this->PostalCode;
-    }
-
-    /**
-     * @param string|null $PostalCode
-     */
-    public function setPostalCode(?string $PostalCode): void
-    {
-        $this->PostalCode = $PostalCode;
     }
 
     /**
@@ -131,11 +83,4 @@ class Address extends BambooPaymentObject
         return $this->City;
     }
 
-    /**
-     * @param string|null $City
-     */
-    public function setCity(?string $City): void
-    {
-        $this->City = $City;
-    }
 }
