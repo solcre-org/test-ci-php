@@ -10,6 +10,8 @@ use BambooPayment\HttpClient\HttpClient;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use function array_merge;
+use function count;
+use function is_array;
 
 class ApiRequest
 {
@@ -139,7 +141,7 @@ class ApiRequest
             }
 
             $errorData = $body[BambooPaymentClient::ARRAY_ERROR_KEY] ?? null;
-            if (\is_array($errorData) && \count($errorData) > 0) {
+            if (is_array($errorData) && count($errorData) > 0) {
                 $errorHandler->handleErrorResponse($body, $code);
             }
         } catch (Exception $e) {

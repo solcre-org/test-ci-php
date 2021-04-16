@@ -3,6 +3,7 @@
 namespace BambooPayment\Core;
 
 use BambooPayment\Entity\BambooPaymentObject;
+use function is_array;
 
 abstract class AbstractService
 {
@@ -11,6 +12,31 @@ abstract class AbstractService
     public function __construct(BambooPaymentClient $client)
     {
         $this->client = $client;
+    }
+
+    public function create(?array $params = null): BambooPaymentObject
+    {
+        return $this->request('post', $this->getBaseUri(), $params);
+    }
+
+    public function delete(int $id, ?array $params = null): BambooPaymentObject
+    {
+        return $this->request('delete', sprintf($this->getBaseUri() . '/%s', $id), $params);
+    }
+
+    public function fetch(int $id): BambooPaymentObject
+    {
+        return $this->request('get', sprintf($this->getBaseUri() . '/%s', $id));
+    }
+
+    public function update(int $id, ?array $params = null): BambooPaymentObject
+    {
+        return $this->request('post', sprintf($this->getBaseUri() . '/%s/update', $id), $params);
+    }
+
+    public function all(array $params = []): array
+    {
+        return $this->requestCollection($this->getBaseUri(), $params);
     }
 
     /**
@@ -30,15 +56,14 @@ abstract class AbstractService
     }
 
     protected function requestCollection(
-        string $method,
         string $path,
         ?array $params = null
     ): array {
-        $response = $this->client->request($this->client->createApiRequest($method, $path, $params));
+        $response = $this->client->request($this->client->createApiRequest('get', $path, $params));
 
         $result = [];
         foreach ($response as $item) {
-            if (\is_array($item)) {
+            if (is_array($item)) {
                 $result[] = $this->convertToBambooPaymentObject($item);
             }
         }
@@ -58,4 +83,6 @@ abstract class AbstractService
     }
 
     abstract public function getEntityClass(): string;
+
+    abstract public function getBaseUri(): string;
 }

@@ -2,6 +2,7 @@
 
 namespace BambooPaymentTests\Service;
 
+use BambooPayment\Entity\Purchase;
 use BambooPayment\Service\PurchaseService;
 use BambooPaymentTests\BaseTest;
 
@@ -14,6 +15,7 @@ class PurchaseServiceTest extends BaseTest
 
         $purchase = $service->create();
 
+        self::assertInstanceOf(Purchase::class, $purchase);
         self::assertEquals(90335, $purchase->getPurchaseId());
     }
 
@@ -23,6 +25,7 @@ class PurchaseServiceTest extends BaseTest
         $service             = new PurchaseService($bambooPaymentClient);
 
         $purchase = $service->fetch(90511);
+        self::assertInstanceOf(Purchase::class, $purchase);
         self::assertEquals(90511, $purchase->getPurchaseId());
 
         $customer = $purchase->getCustomer();
@@ -37,5 +40,13 @@ class PurchaseServiceTest extends BaseTest
         $purchase = $service->refund(90535);
 
         self::assertCount(1, $purchase->getRefundList());
+    }
+
+    public function testGetAllPurchases(): void
+    {
+        $bambooPaymentClient = $this->createBambooClientWithApiRequestMocked('purchases', 'all');
+        $service             = new PurchaseService($bambooPaymentClient);
+
+        self::assertCount(5, $service->all());
     }
 }

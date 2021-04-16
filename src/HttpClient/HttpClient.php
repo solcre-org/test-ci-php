@@ -6,6 +6,7 @@ use BambooPayment\Exception\UnexpectedValueException;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
+use function array_merge;
 use function is_callable;
 use function strtolower;
 
@@ -55,7 +56,7 @@ final class HttpClient
 
         return $this->client->$method(
             $absUrl,
-            \array_merge(
+            array_merge(
                 [
                     'headers'     => $headers,
                     'http_errors' => false

@@ -2,6 +2,7 @@
 
 namespace BambooPaymentTests\Service;
 
+use BambooPayment\Entity\Customer;
 use BambooPayment\Exception\UnknownApiErrorException;
 use BambooPayment\Service\CustomerService;
 use BambooPaymentTests\BaseTest;
@@ -15,6 +16,7 @@ class CustomerServiceTest extends BaseTest
 
         $customer = $service->fetch(53479);
 
+        self::assertInstanceOf(Customer::class, $customer);
         self::assertEquals('Email222222@bamboopayment.com', $customer->getEmail());
     }
 
