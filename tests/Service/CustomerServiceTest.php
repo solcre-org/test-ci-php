@@ -2,6 +2,7 @@
 
 namespace BambooPaymentTests\Service;
 
+use BambooPayment\Entity\Address;
 use BambooPayment\Entity\Customer;
 use BambooPayment\Exception\UnknownApiErrorException;
 use BambooPayment\Service\CustomerService;
@@ -38,6 +39,18 @@ class CustomerServiceTest extends BaseTest
 
         $customer = $service->fetch(53479)->toArray();
 
+        $address = new Address();
+        $address = $address->hydrate(
+            [
+                'AddressId'     => 51615,
+                'AddressType'   => 1,
+                'Country'       => 'UY',
+                'State'         => 'Montevideo',
+                'AddressDetail' => '10000',
+                'PostalCode'    => null,
+                'City'          => 'MONTEVIDEO'
+            ]);
+
         self::assertEquals(
             [
                 'CustomerId'         => 53479,
@@ -47,15 +60,7 @@ class CustomerServiceTest extends BaseTest
                 'Email'              => 'Email222222@bamboopayment.com',
                 'Enabled'            => true,
                 'ShippingAddress'    => null,
-                'BillingAddress'     => [
-                    'AddressId'     => 51615,
-                    'AddressType'   => 1,
-                    'Country'       => 'UY',
-                    'State'         => 'Montevideo',
-                    'AddressDetail' => '10000',
-                    'PostalCode'    => null,
-                    'City'          => 'MONTEVIDEO'
-                ],
+                'BillingAddress'     => $address,
                 'AdditionalData'     => null,
                 'PaymentProfiles'    => [],
                 'CaptureURL'         => 'https://testapi.siemprepago.com/v1/Capture/',

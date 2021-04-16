@@ -24,10 +24,10 @@ class Customer extends BambooPaymentObject
     /** @var bool|null */
     private $Enabled;
 
-    /** @var string|null */
+    /** @var \BambooPayment\Entity\Address|null */
     private $ShippingAddress;
 
-    /** @var array|null */
+    /** @var \BambooPayment\Entity\Address|null */
     private $BillingAddress;
 
     /** @var array|null */
@@ -59,6 +59,23 @@ class Customer extends BambooPaymentObject
 
     /** @var string|null */
     private $PhoneNumber;
+
+    public function hydrate(array $data): self
+    {
+        $shippingAddress = $data['ShippingAddress'] ?? null;
+        if ($shippingAddress !== null) {
+            $address                 = new Address();
+            $data['ShippingAddress'] = $address->hydrate($shippingAddress);
+        }
+
+        $billingAddress = $data['BillingAddress'] ?? null;
+        if ($billingAddress !== null) {
+            $address                = new Address();
+            $data['BillingAddress'] = $address->hydrate($billingAddress);
+        }
+
+        return parent::hydrate($data);
+    }
 
     /**
      * @return int
@@ -109,17 +126,17 @@ class Customer extends BambooPaymentObject
     }
 
     /**
-     * @return string|null
+     * @return \BambooPayment\Entity\Address|null
      */
-    public function getShippingAddress(): ?string
+    public function getShippingAddress(): ?Address
     {
         return $this->ShippingAddress;
     }
 
     /**
-     * @return array|null
+     * @return \BambooPayment\Entity\Address|null
      */
-    public function getBillingAddress(): ?array
+    public function getBillingAddress(): ?Address
     {
         return $this->BillingAddress;
     }

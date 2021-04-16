@@ -52,14 +52,13 @@ class CustomerEntityTest extends BaseTest
         self::assertTrue($customer->getEnabled());
         self::assertNull($customer->getShippingAddress());
         $billingAddress = $customer->getBillingAddress();
-        self::assertIsArray($billingAddress);
-        self::assertEquals(51615, $billingAddress['AddressId']);
-        self::assertEquals(1, $billingAddress['AddressType']);
-        self::assertEquals('UY', $billingAddress['Country']);
-        self::assertEquals('Montevideo', $billingAddress['State']);
-        self::assertEquals('10000', $billingAddress['AddressDetail']);
-        self::assertEquals(null, $billingAddress['PostalCode']);
-        self::assertEquals('MONTEVIDEO', $billingAddress['City']);
+        self::assertEquals(51615, $billingAddress->getAddressId());
+        self::assertEquals(1, $billingAddress->getAddressType());
+        self::assertEquals('UY', $billingAddress->getCountry());
+        self::assertEquals('Montevideo', $billingAddress->getState());
+        self::assertEquals('10000', $billingAddress->getAddressDetail());
+        self::assertEquals(null, $billingAddress->getPostalCode());
+        self::assertEquals('MONTEVIDEO', $billingAddress->getCity());
         self::assertNull($customer->getAdditionalData());
         self::assertIsArray($customer->getPaymentProfiles());
         self::assertEquals('https://testapi.siemprepago.com/v1/Capture/', $customer->getCaptureURL());
@@ -70,5 +69,36 @@ class CustomerEntityTest extends BaseTest
         self::assertEquals(2, $customer->getDocumentTypeId());
         self::assertEquals('24022330', $customer->getPhoneNumber());
 
+    }
+
+    public function testHydrateWithNoAddress(): void
+    {
+        $customer = new Customer();
+
+        /** @var Customer $customer */
+        $customer = $customer->hydrate(
+            [
+                'CustomerId'         => 53479,
+                'Created'            => '2021-04-06T16:08:43.767',
+                'CommerceCustomerId' => null,
+                'Owner'              => 'Commerce',
+                'Email'              => 'Email222222@bamboopayment.com',
+                'Enabled'            => true,
+                'ShippingAddress'    => null,
+                'Plans'              => null,
+                'AdditionalData'     => null,
+                'PaymentProfiles'    => [],
+                'CaptureURL'         => 'https://testapi.siemprepago.com/v1/Capture/',
+                'UniqueID'           => 'UI_f6094ccb-7140-480d-af2f-52ea1fe35d6b',
+                'URL'                => 'https://testapi.siemprepago.com/v1/api/Customer/53479',
+                'FirstName'          => 'PrimerNombre 2222',
+                'LastName'           => 'PrimerApellido 2222',
+                'DocNumber'          => '12345672',
+                'DocumentTypeId'     => 2,
+                'PhoneNumber'        => '24022330'
+            ]
+        );
+
+        self::assertNull($customer->getBillingAddress());
     }
 }
