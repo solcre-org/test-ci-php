@@ -23,18 +23,19 @@ final class HttpClient
         return self::$instance;
     }
 
-    protected $defaultOptions;
     protected ClientInterface $client;
 
-    public function __construct($defaultOptions = null)
+    /**
+     * @param \GuzzleHttp\Client|\Psr\Http\Client\ClientInterface $client
+     */
+    public function setClient($client): void
     {
-        $this->client         = new GuzzleClient();
-        $this->defaultOptions = $defaultOptions;
+        $this->client = $client;
     }
 
-    public function getDefaultOptions()
+    public function __construct()
     {
-        return $this->defaultOptions;
+        $this->client = new GuzzleClient();
     }
 
     public function request(string $method, string $absUrl, array $headers, array $params): ResponseInterface
