@@ -65,7 +65,7 @@
       "dev-master": "1.0-dev"
     },
     "hooks": {
-      "commit-msg": "grep -q \"(feat)\\|(fix)\\|(refactor)\\|(docs)\\|(breaking)\" $1",
+      "commit-msg": "grep -q \"(feat)|(fix)|(refactor)|(docs)|(breaking)\" $1",
       "pre-push": [
         "composer test"
       ]
