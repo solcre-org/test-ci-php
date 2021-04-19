@@ -4,11 +4,9 @@
 
 namespace BambooPayment\Entity;
 
-
 /**
  * Class Address
- * Adress of a customer
- * @package BambooPayment\Entity
+ * Adress of a customer.
  */
 class Address extends BambooPaymentObject
 {
@@ -82,5 +80,4 @@ class Address extends BambooPaymentObject
     {
         return $this->City;
     }
-
 }
