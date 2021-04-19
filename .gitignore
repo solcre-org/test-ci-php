@@ -12,3 +12,5 @@ docker
 /.phpcs-cache
 /.phpunit.cache/
 clover.xml
+cghooks.lock
+
