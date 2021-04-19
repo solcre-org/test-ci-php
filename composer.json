@@ -55,7 +55,7 @@
     ]
   },
   "scripts-descriptions": {
-    "phpcs": "Runs codings style test suite",
+    "phpcs": "Runs coding style test suite",
     "phpstan": "Runs complete codebase static analysis",
     "phpunit": "Runs unit and functional testing",
     "test": "Runs full test suite"
