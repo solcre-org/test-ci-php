@@ -58,7 +58,7 @@
     "phpcs": "Runs coding style test suite",
     "phpstan": "Runs complete codebase static analysis",
     "phpunit": "Runs unit and functional testing",
-    "test": "Runs full test suite"
+    "test": "Runs full test suites"
   },
   "extra": {
     "branch-alias": {
