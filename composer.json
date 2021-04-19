@@ -58,14 +58,14 @@
     "phpcs": "Runs coding style test suite",
     "phpstan": "Runs complete codebase static analysis",
     "phpunit": "Runs unit and functional testing",
-    "test": "Runs full test suites"
+    "test": "Runs full test suite"
   },
   "extra": {
     "branch-alias": {
       "dev-master": "1.0-dev"
     },
     "hooks": {
-      "commit-msg": "grep -q \"feat\\|fix\\|refactor\\|docs\\|breaking\" $1",
+      "commit-msg": "grep -w \"feat\\|fix\\|docs\\|test\\|breaking\" $1 |  grep \": \" $1",
       "pre-push": [
         "composer test"
       ]
