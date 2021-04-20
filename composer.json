@@ -23,7 +23,6 @@
     "ocramius/generated-hydrator": "^4.1"
   },
   "require-dev": {
-    "brainmaestro/composer-git-hooks": "^2.8",
     "friendsofphp/php-cs-fixer": "^2.18",
     "phpstan/phpstan": "^0.12.83",
     "phpstan/phpstan-phpunit": "^0.12.18",
@@ -41,7 +40,6 @@
     }
   },
   "scripts": {
-    "post-install-cmd": "cghooks add --ignore-lock",
     "phpcs": "php-cs-fixer fix -vvv --diff --dry-run --allow-risky=yes --ansi",
     "phpcs:fix": "php-cs-fixer fix -vvv --allow-risky=yes --ansi",
     "phpstan": "phpstan analyse -l 5 -c phpstan.neon src tests --ansi --memory-limit=192M",
